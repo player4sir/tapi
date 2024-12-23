@@ -23,15 +23,34 @@ async function bootstrap() {
     customfavIcon: 'https://swagger.io/favicon.png',
     customJs: [
       'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui-bundle.min.js',
+      'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui-standalone-preset.min.js'
     ],
     customCssUrl: [
       'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui.min.css',
+      'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui-standalone-preset.min.css'
     ],
+    swaggerOptions: {
+      persistAuthorization: true,
+      displayRequestDuration: true,
+      docExpansion: 'list',
+      filter: true,
+      showExtensions: true,
+      showCommonExtensions: true,
+      tryItOutEnabled: true
+    }
   });
 
-  // 基本安全头
+  // 修改 helmet 配置，允许加载 Swagger UI 资源
   app.use(helmet({
-    contentSecurityPolicy: false, // 为了让 Swagger UI 正常工作
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: [`'self'`],
+        styleSrc: [`'self'`, `'unsafe-inline'`, 'cdnjs.cloudflare.com'],
+        scriptSrc: [`'self'`, `'unsafe-inline'`, `'unsafe-eval'`, 'cdnjs.cloudflare.com'],
+        imgSrc: [`'self'`, 'data:', 'swagger.io'],
+        connectSrc: [`'self'`]
+      },
+    },
   }));
   
   // 输入验证
