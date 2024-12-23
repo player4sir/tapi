@@ -29,7 +29,6 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
-    "vercel-build": "npm run build",
     "format": "prettier --write \"src/**/*.ts\"",
     "start": "nest start",
     "dev": "nest start --watch",
