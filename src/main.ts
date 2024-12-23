@@ -18,10 +18,21 @@ async function bootstrap() {
     .addApiKey({ type: 'apiKey', name: 'x-api-key', in: 'header' }, 'x-api-key')
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api-docs', app, document);
+  SwaggerModule.setup('api-docs', app, document, {
+    customSiteTitle: '汽水音乐 API 文档',
+    customfavIcon: 'https://swagger.io/favicon.png',
+    customJs: [
+      'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui-bundle.min.js',
+    ],
+    customCssUrl: [
+      'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui.min.css',
+    ],
+  });
 
   // 基本安全头
-  app.use(helmet());
+  app.use(helmet({
+    contentSecurityPolicy: false, // 为了让 Swagger UI 正常工作
+  }));
   
   // 输入验证
   app.useGlobalPipes(new ValidationPipe({
