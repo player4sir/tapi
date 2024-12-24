@@ -9,11 +9,21 @@
   "routes": [
     {
       "src": "/api-docs",
-      "dest": "src/main.ts"
+      "dest": "src/main.ts",
+      "headers": {
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+        "Pragma": "no-cache",
+        "Expires": "0"
+      }
     },
     {
       "src": "/api-docs/(.*)",
-      "dest": "src/main.ts"
+      "dest": "src/main.ts",
+      "headers": {
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+        "Pragma": "no-cache",
+        "Expires": "0"
+      }
     },
     {
       "src": "/(.*)",
