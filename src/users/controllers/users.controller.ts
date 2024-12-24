@@ -43,18 +43,19 @@ export class UsersController {
   })
   @ApiResponse({ 
     status: 400, 
-    description: '错误', 
+    description: '参数错误', 
     schema: {
       type: 'object',
       properties: {
-        success: { type: 'boolean', example: false },
-        error: {
-          type: 'object',
-          properties: {
-            message: { type: 'string', example: 'Profile creation error' },
-            code: { type: 'string', example: 'PROFILE_CREATION_ERROR' }
-          }
-        }
+        message: { 
+          type: 'array',
+          example: [
+            "device_id must be 6 digits",
+            "device_info must be an object"
+          ]
+        },
+        error: { type: 'string', example: 'Bad Request' },
+        statusCode: { type: 'number', example: 400 }
       }
     }
   })
@@ -124,8 +125,8 @@ export class UsersController {
   @ApiQuery({ 
     name: 'device_id', 
     required: true, 
-    description: '设备唯一标识',
-    example: 'device_xxxxxxxxxxxx'
+    description: '6位数字设备ID',
+    example: '123456'
   })
   @ApiResponse({ 
     status: 200, 
