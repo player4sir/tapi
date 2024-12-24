@@ -1,12 +1,35 @@
-import { IsUUID, IsNotEmpty } from 'class-validator';
+import { IsString, IsNotEmpty, IsEnum, IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+
+export enum Platform {
+  ANDROID = 'android',
+  IOS = 'ios'
+}
 
 export class CreateUserDto {
   @ApiProperty({ 
-    example: '123e4567-e89b-12d3-a456-426614174000', 
-    description: '设备UUID'
+    example: 'device_xxxxxxxxxxxx', 
+    description: '设备唯一标识'
   })
-  @IsUUID()
+  @IsString()
   @IsNotEmpty()
-  uuid: string;
+  device_id: string;
+
+  @ApiProperty({ 
+    example: 'android',
+    enum: Platform,
+    description: '平台类型'
+  })
+  @IsEnum(Platform)
+  @IsNotEmpty()
+  platform: Platform;
+
+  @ApiProperty({ 
+    example: 'SM-G9860', 
+    description: '设备型号',
+    required: false
+  })
+  @IsString()
+  @IsOptional()
+  model?: string;
 } 

@@ -8,21 +8,24 @@ export class UsersService {
 
   async register(createUserDto: CreateUserDto) {
     try {
-      const { uuid } = createUserDto;
+      const { device_id, platform, model } = createUserDto;
       
-      // 检查UUID是否已存在
+      // 检查设备ID是否已存在
       const { data: existingUser } = await this.supabaseService.getClient()
         .from('profiles')
         .select('*')
-        .eq('id', uuid)
+        .eq('device_id', device_id)
         .single();
 
       // 如果用户已存在，直接返回用户信息
       if (existingUser) {
-        console.log('User exists:', existingUser);
+        console.log('Device exists:', existingUser);
         return {
           user: {
             id: existingUser.id,
+            device_id: existingUser.device_id,
+            platform: existingUser.platform,
+            model: existingUser.model,
             coins: existingUser.coins,
           },
           isNewUser: false
@@ -30,17 +33,21 @@ export class UsersService {
       }
 
       // 如果用户不存在，创建新用户
-      console.log('Creating new user:', uuid);
+      console.log('Creating new device profile:', device_id);
 
       // 创建用户资料
-      const { error: profileError } = await this.supabaseService.getClient()
+      const { data: newUser, error: profileError } = await this.supabaseService.getClient()
         .from('profiles')
         .insert([
           {
-            id: uuid,
+            device_id,
+            platform,
+            model,
             coins: 20,
           }
-        ]);
+        ])
+        .select()
+        .single();
 
       if (profileError) {
         console.error('Profile creation error:', profileError);
@@ -49,8 +56,11 @@ export class UsersService {
 
       return {
         user: {
-          id: uuid,
-          coins: 20,
+          id: newUser.id,
+          device_id: newUser.device_id,
+          platform: newUser.platform,
+          model: newUser.model,
+          coins: newUser.coins,
         },
         isNewUser: true
       };
