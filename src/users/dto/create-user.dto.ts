@@ -31,7 +31,10 @@ export class DeviceInfoDto {
 export class CreateUserDto {
   @ApiProperty({ 
     example: '123456',
-    description: '6位数字设备ID'
+    description: '6位数字设备ID',
+    minLength: 6,
+    maxLength: 6,
+    pattern: '^[0-9]{6}$'
   })
   @IsString()
   @IsNotEmpty()
@@ -42,7 +45,7 @@ export class CreateUserDto {
   @ApiProperty({ 
     example: 'android',
     enum: Platform,
-    description: '平台类型'
+    description: '平台类型: android/ios'
   })
   @IsEnum(Platform)
   @IsNotEmpty()
@@ -51,12 +54,13 @@ export class CreateUserDto {
   @ApiProperty({
     example: {
       brand: 'Samsung',
-      device: 'Galaxy S21', 
+      device: 'Galaxy S21',
       model: 'SM-G991B',
       version: '13',
       sdk: 33
     },
-    description: '设备详细信息'
+    description: '设备详细信息',
+    type: DeviceInfoDto
   })
   @IsObject()
   device_info: DeviceInfoDto;
