@@ -1,5 +1,5 @@
 import { Controller, Post, Get, Body, Query, Put } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiQuery, ApiBody } from '@nestjs/swagger';
 import { UsersService } from '../services/users.service';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateCoinsDto } from '../dto/update-coins.dto';
@@ -13,6 +13,26 @@ export class UsersController {
   @ApiOperation({ 
     summary: '注册/获取用户', 
     description: '基于设备ID注册或获取用户信息' 
+  })
+  @ApiBody({
+    type: CreateUserDto,
+    description: '用户注册信息',
+    examples: {
+      example1: {
+        summary: '示例',
+        value: {
+          device_id: '123456',
+          platform: 'android',
+          device_info: {
+            brand: 'Samsung',
+            device: 'Galaxy S21',
+            model: 'SM-G991B',
+            version: '13',
+            sdk: 33
+          }
+        }
+      }
+    }
   })
   @ApiResponse({ 
     status: 200, 
