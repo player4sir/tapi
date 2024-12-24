@@ -7,7 +7,7 @@ export class UsersService {
   constructor(private supabaseService: SupabaseService) {}
 
   async register(createUserDto: CreateUserDto) {
-    const { device_id, platform, model } = createUserDto;
+    const { device_id, platform, device_info } = createUserDto;
     
     // 检查设备ID是否已存在
     const existingUserResult = await this.getProfile(device_id);
@@ -32,7 +32,7 @@ export class UsersService {
         {
           device_id,
           platform,
-          model,
+          device_info,
           coins: 20,
         }
       ])
@@ -57,7 +57,6 @@ export class UsersService {
           id: newUser.id,
           device_id: newUser.device_id,
           platform: newUser.platform,
-          model: newUser.model,
           coins: newUser.coins,
           created_at: newUser.created_at,
           updated_at: newUser.updated_at
@@ -85,23 +84,12 @@ export class UsersService {
       };
     }
 
-    if (!user) {
-      return {
-        success: false,
-        error: {
-          message: 'User not found',
-          code: 'USER_NOT_FOUND'
-        }
-      };
-    }
-
     return {
       success: true,
       data: {
         id: user.id,
         device_id: user.device_id,
         platform: user.platform,
-        model: user.model,
         coins: user.coins,
         created_at: user.created_at,
         updated_at: user.updated_at

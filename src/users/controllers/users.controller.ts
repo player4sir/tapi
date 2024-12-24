@@ -27,16 +27,15 @@ export class UsersController {
             user: {
               type: 'object',
               properties: {
-                id: { type: 'string', example: 'uuid-string' },
-                device_id: { type: 'string', example: 'device_xxxxxxxxxxxx' },
+                id: { type: 'string', example: 'uuid-xxx' },
+                device_id: { type: 'string', example: '123456' },
                 platform: { type: 'string', example: 'android' },
-                model: { type: 'string', example: 'SM-G9860' },
                 coins: { type: 'number', example: 20 },
                 created_at: { type: 'string', format: 'date-time' },
                 updated_at: { type: 'string', format: 'date-time' }
               }
             },
-            isNewUser: { type: 'boolean', example: true }
+            isNewUser: { type: 'boolean', example: false }
           }
         }
       }
